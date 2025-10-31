@@ -1,0 +1,35 @@
+{%extends 'chatbot_base/base.html'%}
+{% load static %}
+{%block content%}
+<section id="RainDux-Bot"></section>
+    <div class="container chat-container" >
+        <div hidden class="chat-header">
+            💬 RainDux-Bot
+        </div>
+        <div class="chat-messages" id="chat-history">
+            <div class="message bot">
+                <div>Hello! Welcome to the chat app. How can I help you today?</div>
+                <div class="message-time" id="welcomeTime"></div>
+            </div>
+        </div>
+        <div class="typing-indicator" id="typingIndicator">
+            <div class="typing-dots">
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+            </div>
+        </div>
+
+
+        <div class="chat-input-container">
+            <input class="chat-input" type="text" id="user-input" placeholder="Type your message..." maxlength="500">
+            <button class="send-button"  id="send-Btn"onclick="sendMessage()">Send</button>
+            {% csrf_token %} 
+        </div>
+
+        <script>
+            const bot_url = "{% url 'send_message' %}";
+        </script>
+    </div>
+</section>
+{%endblock%}

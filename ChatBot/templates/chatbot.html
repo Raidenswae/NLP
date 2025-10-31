@@ -1,0 +1,93 @@
+{%extends 'chatbot_base/base.html'%}
+{%load static%}
+{%block content%}
+<section id="RainDux-Bot"></section>
+    <div class="container chat-container" >
+        <div class="chat-header">
+            💬 RainDux-Bot
+        </div>
+        <div class="chat-messages" id="chatMessages">
+            <div class="message bot">
+                <div>Hello! Welcome to the chat app. How can I help you today?</div>
+                <div class="message-time" id="welcomeTime"></div>
+            </div>
+        </div>
+        <div class="typing-indicator" id="typingIndicator">
+            <div class="typing-dots">
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+            </div>
+        </div>
+        
+            <div class="chat-input-container">
+                {% csrf_token %} 
+            <input type="text" class="chat-input" id="chatInput" placeholder="Type your message..." maxlength="500">
+            <button class="send-button" id="sendButton">Send</button>
+            </div>
+
+            <script>
+                // Helper function to extract the CSRF token from the template
+                function getCsrfToken() {
+                    const tokenInput = document.querySelector('[name="csrfmiddlewaretoken"]');
+                    return tokenInput ? tokenInput.value : '';
+                }
+        
+                async function sendMessage() {
+                    // Get user input from the textbox
+                    const userInputElement = document.getElementById('chatInput');
+                    const messageToSend = userInputElement.value;
+                    console.log(messageToSend)
+        
+                    // Check if the input is empty
+                    if (messageToSend.trim() === "") {
+                        alert("Please enter a message!");
+                        return;
+                    }
+        
+                    // Get the Django URL using the template tag
+                    const url = "{% url 'chatbot_response' %}"; 
+                    const csrfToken = getCsrfToken();
+                    const outputArea = document.getElementById('output-area');
+                    
+                    // Clear the input and show a waiting message
+                    userInputElement.value = '';
+                    outputArea.innerHTML = '<p>Bot: *Typing...*</p>';
+        
+                    try {
+                        // Send an asynchronous POST request using the Fetch API
+                        const response = await fetch(url, {
+                            method: 'POST', // Crucial: Must be POST to send data
+                            headers: {
+                                'Content-Type': 'application/json',
+                                // Crucial for Django security
+                                'X-CSRFToken': csrfToken 
+                            },
+                            // Send the message as a JSON string
+                            body: JSON.stringify({
+                                'message': messageToSend 
+                            })
+                        });
+        
+                        // Handle non-200 responses (like 400 or 500)
+                        if (!response.ok) {
+                            const errorDetails = await response.json();
+                            throw new Error(`Server Error (${response.status}): ${errorDetails.message || 'Unknown error'}`);
+                        }
+        
+                        // Parse the JSON response from the Python view
+                        const data = await response.json();
+                        
+                        // 3. Update the HTML (receive response)
+                        outputArea.innerHTML = `<p>You: ${data.original_input}</p><p>Bot: ${data.response_text}</p>`;
+                        
+                    } catch (error) {
+                        console.error("Communication Error:", error);
+                        outputArea.innerHTML = `<p style="color: red;">Error: Failed to get response. Check console for details.</p>`;
+                    }
+                }
+            </script>
+
+    </div>
+</section>
+{%endblock%}

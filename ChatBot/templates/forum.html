@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechTalk Forum</title>
+    <style>
+        body {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo h1 {
+            color: #667eea;
+            margin: 0;
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+        }
+
+        .user-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #f8f9fa;
+            padding: 10px 15px;
+            border-radius: 25px;
+        }
+
+        .avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #218838;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 30px;
+        }
+
+        .forum-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .sidebar-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar-card h3 {
+            margin-top: 0;
+            color: #333;
+            font-size: 18px;
+        }
+
+        .category-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .category-item {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .category-item:last-child {
+            border-bottom: none;
+        }
+
+        .category-name {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .category-name:hover {
+            color: #764ba2;
+        }
+
+        .post-count {
+            background: #e9ecef;
+            color: #6c757d;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+        }
+
+        .new-post-form {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .posts-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .post-card {
+            border: 1px solid #e9ecef;
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .post-card:hover {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .post-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .post-author {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .post-meta {
+            color: #6c757d;
+            font-size: 14px;
+        }
+
+        .post-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin: 0 0 10px 0;
+        }
+
+        .post-content {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .post-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .action-btn {
+            background: none;
+            border: none;
+            color: #6c757d;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 10px;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .action-btn:hover {
+            background: #f8f9fa;
+            color: #667eea;
+        }
+
+        .action-btn.liked {
+            color: #e74c3c;
+        }
+
+        .replies-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .reply-card {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .reply-form {
+            margin-top: 15px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 15px;
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            border-radius: 10px;
+            color: white;
+        }
+
+        .stat-number {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+
+        .online-users {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .online-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 0;
+        }
+
+        .online-indicator {
+            width: 8px;
+            height: 8px;
+            background: #28a745;
+            border-radius: 50%;
+        }
+
+        .login-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            width: 90%;
+            max-width: 400px;
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #6c757d;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .container {
+                padding: 10px;
+            }
+            
+            .forum-section {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="logo">
+                <div class="logo-icon">💬</div>
+                <h1>TechTalk Forum</h1>
+            </div>
+            <div class="user-section">
+                <div id="guestSection">
+                    <button class="btn btn-primary" onclick="showLogin()">Login</button>
+                    <button class="btn btn-secondary" onclick="showRegister()">Register</button>
+                </div>
+                <div id="userSection" class="hidden">
+                    <div class="user-info">
+                        <div class="avatar" id="userAvatar">U</div>
+                        <span id="username">User</span>
+                    </div>
+                    <button class="btn btn-secondary" onclick="logout()">Logout</button>
+                </div>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <main class="forum-section">
+                <div id="newPostSection" class="hidden">
+                    <div class="new-post-form">
+                        <h3>Create New Post</h3>
+                        <form id="newPostForm">
+                            <div class="form-group">
+                                <label for="postTitle">Title</label>
+                                <input type="text" id="postTitle" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="postCategory">Category</label>
+                                <select id="postCategory" class="form-control" required>
+                                    <option value="">Select Category</option>
+                                    <option value="general">General Discussion</option>
+                                    <option value="tech">Technology</option>
+                                    <option value="programming">Programming</option>
+                                    <option value="help">Help & Support</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="postContent">Content</label>
+                                <textarea id="postContent" class="form-control" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-success">Post</button>
+                            <button type="button" class="btn btn-secondary" onclick="hideNewPost()">Cancel</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="posts-list" id="postsList">
+                    <!-- Posts will be dynamically loaded here -->
+                </div>
+            </main>
+
+            <aside class="sidebar">
+                <div class="sidebar-card">
+                    <div id="loginPrompt">
+                        <h3>Welcome!</h3>
+                        <p>Join our community to participate in discussions.</p>
+                        <button class="btn btn-primary" onclick="showLogin()">Login to Post</button>
+                    </div>
+                    <div id="userActions" class="hidden">
+                        <h3>Quick Actions</h3>
+                        <button class="btn btn-success" onclick="showNewPost()" style="width: 100%; margin-bottom: 10px;">New Post</button>
+                        <button class="btn btn-primary" onclick="refreshPosts()" style="width: 100%;">Refresh</button>
+                    </div>
+                </div>
+
+                <div class="sidebar-card">
+                    <h3>Categories</h3>
+                    <ul class="category-list">
+                        <li class="category-item">
+                            <a href="#" class="category-name" onclick="filterByCategory('general')">General Discussion</a>
+                            <span class="post-count" id="generalCount">0</span>
+                        </li>
+                        <li class="category-item">
+                            <a href="#" class="category-name" onclick="filterByCategory('tech')">Technology</a>
+                            <span class="post-count" id="techCount">0</span>
+                        </li>
+                        <li class="category-item">
+                            <a href="#" class="category-name" onclick="filterByCategory('programming')">Programming</a>
+                            <span class="post-count" id="programmingCount">0</span>
+                        </li>
+                        <li class="category-item">
+                            <a href="#" class="category-name" onclick="filterByCategory('help')">Help & Support</a>
+                            <span class="post-count" id="helpCount">0</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="sidebar-card">
+                    <h3>Forum Stats</h3>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-number" id="totalPosts">0</div>
+                            <div class="stat-label">Posts</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="totalUsers">42</div>
+                            <div class="stat-label">Users</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="onlineCount">8</div>
+                            <div class="stat-label">Online</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sidebar-card">
+                    <h3>Online Users</h3>
+                    <ul class="online-users">
+                        <li class="online-user">
+                            <div class="online-indicator"></div>
+                            <span>Alex_Dev</span>
+                        </li>
+                        <li class="online-user">
+                            <div class="online-indicator"></div>
+                            <span>Sarah_Tech</span>
+                        </li>
+                        <li class="online-user">
+                            <div class="online-indicator"></div>
+                            <span>Mike_Code</span>
+                        </li>
+                    </ul>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="login-modal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal()">&times;</button>
+            <h3 id="modalTitle">Login</h3>
+            <form id="authForm">
+                <div class="form-group">
+                    <label for="authUsername">Username</label>
+                    <input type="text" id="authUsername" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="authPassword">Password</label>
+                    <input type="password" id="authPassword" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;" id="authSubmit">Login</button>
+            </form>
+            <p style="text-align: center; margin-top: 15px;">
+                <span id="authToggleText">Don't have an account?</span>
+                <a href="#" onclick="toggleAuthMode()" id="authToggleLink">Register</a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Forum data storage
+        let posts = [
+            {
+                id: 1,
+                title: "Welcome to TechTalk Forum!",
+                content: "This is our new community forum for tech enthusiasts. Feel free to share your thoughts, ask questions, and help others!",
+                author: "Admin",
+                category: "general",
+                timestamp: new Date(Date.now() - 3600000),
+                likes: 15,
+                replies: [
+                    {
+                        id: 1,
+                        content: "Great to be here! Looking forward to the discussions.",
+                        author: "TechLover",
+                        timestamp: new Date(Date.now() - 1800000)
+                    }
+                ]
+            },
+            {
+                id: 2,
+                title: "Best JavaScript Frameworks in 2024",
+                content: "What are your thoughts on the current JavaScript framework landscape? React, Vue, Angular, or something else?",
+                author: "DevMaster",
+                category: "programming",
+                timestamp: new Date(Date.now() - 7200000),
+                likes: 8,
+                replies: []
+            },
+            {
+                id: 3,
+                title: "Need help with CSS Grid",
+                content: "I'm struggling with CSS Grid layout. Can someone explain the difference between grid-template-areas and grid-template-columns?",
+                author: "NewbieCoder",
+                category: "help",
+                timestamp: new Date(Date.now() - 10800000),
+                likes: 3,
+                replies: [
+                    {
+                        id: 2,
+                        content: "Grid-template-columns defines the size of columns, while grid-template-areas lets you name grid areas for easier placement.",
+                        author: "CSSExpert",
+                        timestamp: new Date(Date.now() - 9000000)
+                    }
+                ]
+            }
+        ];
+
+        let currentUser = null;
+        let isLoginMode = true;
+        let currentFilter = null;
+
+        // Initialize forum
+        function initForum() {
+            loadPosts();
+            updateStats();
+            updateCategoryCounts();
+        }
+
+        // Authentication functions
+        function showLogin() {
+            isLoginMode = true;
+            document.getElementById('modalTitle').textContent = 'Login';
+            document.getElementById('authSubmit').textContent = 'Login';
+            document.getElementById('authToggleText').textContent = "Don't have an account?";
+            document.getElementById('authToggleLink').textContent = 'Register';
+            document.getElementById('loginModal').style.display = 'flex';
+        }
+
+        function showRegister() {
+            isLoginMode = false;
+            document.getElementById('modalTitle').textContent = 'Register';
+            document.getElementById('authSubmit').textContent = 'Register';
+            document.getElementById('authToggleText').textContent = 'Already have an account?';
+            document.getElementById('authToggleLink').textContent = 'Login';
+            document.getElementById('loginModal').style.display = 'flex';
+        }
+
+        function toggleAuthMode() {
+            if (isLoginMode) {
+                showRegister();
+            } else {
+                showLogin();
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('loginModal').style.display = 'none';
+            document.getElementById('authForm').reset();
+        }
+
+        function login(username) {
+            currentUser = username;
+            document.getElementById('username').textContent = username;
+            document.getElementById('userAvatar').textContent = username.charAt(0).toUpperCase();
+            document.getElementById('guestSection').classList.add('hidden');
+            document.getElementById('userSection').classList.remove('hidden');
+            document.getElementById('loginPrompt').classList.add('hidden');
+            document.getElementById('userActions').classList.remove('hidden');
+            closeModal();
+        }
+
+        function logout() {
+            currentUser = null;
+            document.getElementById('guestSection').classList.remove('hidden');
+            document.getElementById('userSection').classList.add('hidden');
+            document.getElementById('loginPrompt').classList.remove('hidden');
+            document.getElementById('userActions').classList.add('hidden');
+            hideNewPost();
+        }
+
+        // Post management functions
+        function showNewPost() {
+            if (!currentUser) {
+                showLogin();
+                return;
+            }
+            document.getElementById('newPostSection').classList.remove('hidden');
+        }
+
+        function hideNewPost() {
+            document.getElementById('newPostSection').classList.add('hidden');
+            document.getElementById('newPostForm').reset();
+        }
+
+        function createPost(title, content, category) {
+            const newPost = {
+                id: posts.length + 1,
+                title: title,
+                content: content,
+                author: currentUser,
+                category: category,
+                timestamp: new Date(),
+                likes: 0,
+                replies: []
+            };
+            posts.unshift(newPost);
+            loadPosts();
+            updateStats();
+            updateCategoryCounts();
+            hideNewPost();
+        }
+
+        function loadPosts() {
+            const postsList = document.getElementById('postsList');
+            const filteredPosts = currentFilter ? posts.filter(post => post.category === currentFilter) : posts;
+            
+            postsList.innerHTML = filteredPosts.map(post => `
+                <div class="post-card">
+                    <div class="post-header">
+                        <div class="post-author">
+                            <div class="avatar">${post.author.charAt(0).toUpperCase()}</div>
+                            <div>
+                                <div style="font-weight: 600;">${post.author}</div>
+                                <div class="post-meta">${formatTime(post.timestamp)} • ${getCategoryName(post.category)}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <h3 class="post-title">${post.title}</h3>
+                    <div class="post-content">${post.content}</div>
+                    <div class="post-actions">
+                        <button class="action-btn" onclick="toggleLike(${post.id})">
+                            <span>❤️</span>
+                            <span>${post.likes}</span>
+                        </button>
+                        <button class="action-btn" onclick="toggleReplies(${post.id})">
+                            <span>💬</span>
+                            <span>${post.replies.length}</span>
+                        </button>
+                        <button class="action-btn" onclick="sharePost(${post.id})">
+                            <span>🔗</span>
+                            <span>Share</span>
+                        </button>
+                    </div>
+                    <div class="replies-section" id="replies-${post.id}" style="display: none;">
+                        <div class="replies-list">
+                            ${post.replies.map(reply => `
+                                <div class="reply-card">
+                                    <div class="post-author" style="margin-bottom: 10px;">
+                                        <div class="avatar">${reply.author.charAt(0).toUpperCase()}</div>
+                                        <div>
+                                            <div style="font-weight: 600;">${reply.author}</div>
+                                            <div class="post-meta">${formatTime(reply.timestamp)}</div>
+                                        </div>
+                                    </div>
+                                    <div>${reply.content}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                        ${currentUser ? `
+                            <div class="reply-form">
+                                <textarea class="form-control" placeholder="Write a reply..." id="reply-${post.id}"></textarea>
+                                <button class="btn btn-primary" onclick="addReply(${post.id})" style="margin-top: 10px;">Reply</button>
+                            </div>
+                        ` : '<p style="text-align: center; color: #6c757d;">Login to reply</p>'}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function toggleLike(postId) {
+            if (!currentUser) {
+                showLogin();
+                return;
+            }
+            const post = posts.find(p => p.id === postId);
+            if (post) {
+                post.likes++;
+                loadPosts();
+            }
+        }
+
+        function toggleReplies(postId) {
+            const repliesSection = document.getElementById(`replies-${postId}`);
+            repliesSection.style.display = repliesSection.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function addReply(postId) {
+            const replyContent = document.getElementById(`reply-${postId}`).value.trim();
+            if (!replyContent) return;
+
+            const post = posts.find(p => p.id === postId);
+            if (post) {
+                const newReply = {
+                    id: Date.now(),
+                    content: replyContent,
+                    author: currentUser,
+                    timestamp: new Date()
+                };
+                post.replies.push(newReply);
+                loadPosts();
+                toggleReplies(postId);
+            }
+        }
+
+        function sharePost(postId) {
+            const post = posts.find(p => p.id === postId);
+            if (post) {
+                const url = `${window.location.href}#post-${postId}`;
+                navigator.clipboard.writeText(url).then(() => {
+                    alert('Post link copied to clipboard!');
+                }).catch(() => {
+                    alert(`Share this post: ${url}`);
+                });
+            }
+        }
+
+        function filterByCategory(category) {
+            currentFilter = currentFilter === category ? null : category;
+            loadPosts();
+            
+            // Update active category styling
+            document.querySelectorAll('.category-name').forEach(link => {
+                link.style.fontWeight = '500';
+            });
+            if (currentFilter) {
+                event.target.style.fontWeight = '700';
+            }
+        }
+
+        function refreshPosts() {
+            loadPosts();
+            updateStats();
+            updateCategoryCounts();
+        }
+
+        // Utility functions
+        function formatTime(timestamp) {
+            const now = new Date();
+            const diff = now - timestamp;
+            const minutes = Math.floor(diff / 60000);
+            const hours = Math.floor(diff / 3600000);
+            const days = Math.floor(diff / 86400000);
+
+            if (minutes < 1) return 'Just now';
+            if (minutes < 60) return `${minutes}m ago`;
+            if (hours < 24) return `${hours}h ago`;
+            return `${days}d ago`;
+        }
+
+        function getCategoryName(category) {
+            const categories = {
+                general: 'General Discussion',
+                tech: 'Technology',
+                programming: 'Programming',
+                help: 'Help & Support'
+            };
+            return categories[category] || category;
+        }
+
+        function updateStats() {
+            document.getElementById('totalPosts').textContent = posts.length;
+        }
+
+        function updateCategoryCounts() {
+            const counts = {
+                general: 0,
+                tech: 0,
+                programming: 0,
+                help: 0
+            };
+
+            posts.forEach(post => {
+                if (counts.hasOwnProperty(post.category)) {
+                    counts[post.category]++;
+                }
+            });
+
+            document.getElementById('generalCount').textContent = counts.general;
+            document.getElementById('techCount').textContent = counts.tech;
+            document.getElementById('programmingCount').textContent = counts.programming;
+            document.getElementById('helpCount').textContent = counts.help;
+        }
+
+        // Event listeners
+        document.getElementById('authForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('authUsername').value.trim();
+            const password = document.getElementById('authPassword').value;
+
+            if (username && password) {
+                if (isLoginMode) {
+                    login(username);
+                } else {
+                    // In a real app, you'd register the user
+                    login(username);
+                }
+            }
+        });
+
+        document.getElementById('newPostForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const title = document.getElementById('postTitle').value.trim();
+            const content = document.getElementById('postContent').value.trim();
+            const category = document.getElementById('postCategory').value;
+
+            if (title && content && category) {
+                createPost(title, content, category);
+            }
+        });
+
+        // Close modal when clicking outside
+        document.getElementById('loginModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // Initialize the forum when page loads
+        initForum();
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98a4f4df76894eca',t:'MTc1OTc1MTU4OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
